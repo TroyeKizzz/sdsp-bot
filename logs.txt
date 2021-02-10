@@ -193,3 +193,8 @@ Current election:
     Кандидат 2 - 0
     Кандидат 3 - 1
 [00:55:49] TroyeKizzz did not manage to vote
+[19:11:25] Logged in as Elections#2398
+Current election:
+    Кандидат 1 - 1
+    Кандидат 2 - 0
+    Кандидат 3 - 1
