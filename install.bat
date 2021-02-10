@@ -1,5 +1,5 @@
 pip install discord.py==0.16.12
 python --version
-echo Версия python должна быть 3.6.0-3.6.9
-echo Версия discord.py должна быть 0.16.12
+echo Версия python должна быть 3.7
+echo Версия discord.py должна быть 1.3.4
 pause
