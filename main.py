@@ -1,7 +1,8 @@
 import discord
 import time
 import mysql.connector
-from cache import token, admin_id, admin_id2, channel_id, election_msg, CANDIDATES
+from cache import admin_id, admin_id2, channel_id, election_msg, CANDIDATES
+from token import token
 
 emojis = {'1️⃣': 1, '2️⃣': 2, '3️⃣': 3, '4️⃣': 4, '5️⃣': 5}
 
