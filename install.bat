@@ -1,5 +1,6 @@
-pip install discord.py==0.16.12
+pip install discord.py==1.6.0
+pip install mysql-connector-python
 python --version
 echo Версия python должна быть 3.7
-echo Версия discord.py должна быть 1.3.4
+echo Версия discord.py должна быть 1.6.0
 pause

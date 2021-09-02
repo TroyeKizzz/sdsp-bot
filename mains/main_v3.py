@@ -9,7 +9,7 @@ def check_right(author):
     data_file = open('data.txt', 'r')
     data = data_file.read().split()
     data_file.close()
-    voters = [int(i) for i in data[3:]]
+    voters = [int(i) for i in data[4:]]
 
     if hash(author) in voters:
         return False
@@ -18,7 +18,7 @@ def check_right(author):
 
 
 def str_votes(votes):
-    return '    Кандидат 1 - ' + str(votes[0]) + '\n    Кандидат 2 - ' + str(votes[1]) + '\n    Кандидат 3 - ' + str(votes[2])
+    return '    Кандидат 1 - ' + str(votes[0]) + '\n    Кандидат 2 - ' + str(votes[1]) + '\n    Кандидат 3 - ' + str(votes[2]) + '\n    Кандидат 4 - ' + str(votes[3])
 
 def add_logs(newdata):
     logs_file = open('logs.txt', 'r')
@@ -39,7 +39,7 @@ async def on_ready():
     data_file = open('data.txt', 'r')
     data = data_file.read().split()
     data_file.close()
-    votes = [int(i) for i in data[:3]]
+    votes = [int(i) for i in data[:4]]
     
     print('Current election:')
     try:
@@ -63,8 +63,8 @@ async def on_reaction_add(reaction, user):
             data = data_file.read().split()
             data_file.close()
 
-            votes = [int(i) for i in data[:3]]
-            voters = [int(i) for i in data[3:]]
+            votes = [int(i) for i in data[:4]]
+            voters = [int(i) for i in data[4:]]
             votes[0] += 1
             voters.append(hash(user))
             data = ''
@@ -107,8 +107,8 @@ async def on_reaction_add(reaction, user):
             data = data_file.read().split()
             data_file.close()
 
-            votes = [int(i) for i in data[:3]]
-            voters = [int(i) for i in data[3:]]
+            votes = [int(i) for i in data[:4]]
+            voters = [int(i) for i in data[4:]]
             votes[1] += 1
             voters.append(hash(user))
             data = ''
@@ -150,8 +150,8 @@ async def on_reaction_add(reaction, user):
             data = data_file.read().split()
             data_file.close()
 
-            votes = [int(i) for i in data[:3]]
-            voters = [int(i) for i in data[3:]]
+            votes = [int(i) for i in data[:4]]
+            voters = [int(i) for i in data[4:]]
             votes[2] += 1
             voters.append(hash(user))
             data = ''
@@ -185,6 +185,49 @@ async def on_reaction_add(reaction, user):
             newmsg = await reaction.message.channel.send(msg)
             await reaction.remove(user)
             await newmsg.delete(delay = 15)
+    
+
+    elif str(reaction) == '4️⃣':
+        if check_right(user):
+            data_file = open('data.txt', 'r')
+            data = data_file.read().split()
+            data_file.close()
+
+            votes = [int(i) for i in data[:4]]
+            voters = [int(i) for i in data[4:]]
+            votes[3] += 1
+            voters.append(hash(user))
+            data = ''
+            voters.sort()
+            for i in votes:
+                data += str(i) + ' '
+            for i in voters:
+                data += str(i) + ' '
+            
+            data_file = open('data.txt', 'w')
+            data_file.write(data)
+            data_file.close()
+
+            cur_time = '[' + time.strftime('%X') + ']'
+            print(cur_time, '+1 к Кандидат 4')
+            print(str_votes(votes))
+
+            add_logs(cur_time + ' +1 к Кандидат 4\n' + str_votes(votes) + '\n')
+
+            msg = '{0.mention}, ваш голос засчитан. Это сообщение будет удалено через 15 секунд.'.format(user)
+            newmsg = await reaction.message.channel.send(msg)
+            await reaction.remove(user)
+            await newmsg.delete(delay = 15)
+        else:
+            cur_time = '[' + time.strftime('%X') + ']'
+            print(cur_time, '{0.name} did not manage to vote'.format(user))
+
+            add_logs(cur_time + ' {0.name} did not manage to vote\n'.format(user))
+
+            msg = '{0.mention}, вы не можете голосовать повторно. Это сообщение будет удалено через 15 секунд.'.format(user)
+            newmsg = await reaction.message.channel.send(msg)
+            await reaction.remove(user)
+            await newmsg.delete(delay = 15)
 
 
     else:
@@ -200,7 +243,7 @@ async def on_message(message):
 
     elif message.content == 'delete election' and message.author.id == admin_id:
         data_file = open('data.txt', 'w')
-        data_file.write('0 0 0 ')
+        data_file.write('0 0 0 0 ')
         data_file.close()
         msg = '{0.author.mention}, голосование успешно удалено'.format(message)
         cur_time = '[' + time.strftime('%X') + ']'
@@ -226,6 +269,7 @@ async def on_message(message):
         await message.channel.last_message.add_reaction('1️⃣')
         await message.channel.last_message.add_reaction('2️⃣')
         await message.channel.last_message.add_reaction('3️⃣')
+        await message.channel.last_message.add_reaction('4️⃣')
         await message.delete()
     
     elif message.content == 'result' and message.author.id == admin_id:
@@ -233,7 +277,7 @@ async def on_message(message):
         data_file = open('data.txt', 'r')
         data = data_file.read().split()
         data_file.close()
-        votes = [int(i) for i in data[:3]]
+        votes = [int(i) for i in data[:4]]
         print(cur_time, 'Current election:')
         print(str_votes(votes))
         await message.delete()

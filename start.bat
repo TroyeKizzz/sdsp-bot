@@ -1,2 +1,2 @@
-python main_v3.py
+python main_v6.py
 pause
